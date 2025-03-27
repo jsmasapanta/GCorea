@@ -7,10 +7,9 @@
     body { font-family: Arial, sans-serif; margin: 20px; }
     h2 { color: darkred; }
     .pregunta { margin-bottom: 25px; border-bottom: 1px solid #ccc; padding-bottom: 10px; }
-    .respuesta { width: 100%; padding: 5px; margin-top: 5px; }
     .correcto { color: green; font-weight: bold; margin-top: 5px; }
     .incorrecto { color: red; font-weight: bold; margin-top: 5px; }
-    button { margin-top: 20px; padding: 10px 20px; font-size: 16px; }
+    button { margin-top: 10px; padding: 6px 12px; font-size: 14px; }
   </style>
 </head>
 <body>
@@ -19,51 +18,67 @@
 
   <script>
     const preguntas = [
-    ["¿Quién era el presidente de Corea del Norte?", "Kim Il-sung"],
-    ["¿Quién era el presidente de Corea del Sur?", "Syngman Rhee"],
-    ["¿Cuáles fueron las razones por las que salieron las fuerzas americanas de la península?", "Aliviar carga financiera, prioridad estratégica en Europa, desconfianza hacia Rhee"],
-    ["¿Quién aprueba la invasión a Corea del Sur?", "Stalin"],
-    ["¿Qué tipo de apoyo brindó la URSS a Corea del Norte?", "Apoyo político, armamento (tanques, aviones, artillería), asesores militares"],
-    ["¿Cuándo Corea del Norte cruzó el paralelo 38 e invadió Corea del Sur?", "25 de junio de 1950"],
-    ["¿Cuándo llegaron las fuerzas norcoreanas a Seúl?", "27 de junio de 1950"],
-    ["¿Cómo se llamaba el sector donde se encontraba la resistencia clave?", "Perímetro de Pusan"],
-    ["¿Dónde funcionó la red de abastecimiento similar al Red Ball Express?", "En Pusan"],
-    ["¿Cuántas contraofensivas existieron?", "Cinco (Masan, Miryang, Taegu, Kyongju y FT Kean en agosto-septiembre de 1950)"],
-    ["¿Qué ayudó a que las contraofensivas tuvieran éxito?", "Uso del terreno clave y fintas con ataques a objetivos limitados"],
-    ["¿Cómo se llama la operación para atacar al enemigo y reconquistar Seúl?", "Operación Chromite"],
-    ["¿Dónde se realizó el ataque a objetivo limitado junto al desembarco de Inchon?", "Kunsan"],
-    ["¿Ante qué evento MacArthur decide realizar la operación en Inchon?", "Ante el colapso del frente sur y la necesidad de un golpe estratégico inesperado"],
-    ["¿De qué manera se sectorizó el desembarco?", "Playa Verde (Wolmido), Playa Roja y Playa Azul (Blue Beach Uno, Dos y Tres)"],
-    ["¿Cuál fue la unidad que tomó el camino a Seúl y dónde desembarcó?", "1.er Regimiento de Marines, en la Playa Azul"],
-    ["¿De qué país y cuántas divisiones se usaron para atacar Corea del Norte?", "De China, entre 21 y 33 divisiones"],
-    ["¿Por qué era importante el embalse de Chosin para la ONU?", "Porque era un área estratégica dentro del corredor de movilidad principal"],
-    ["¿Cuándo se firma el armisticio?", "27 de julio de 1953, en Panmunjom"]
-];
+      ["¿Quién era el presidente de Corea del Norte?", "Kim Il-sung"],
+      ["¿Quién era el presidente de Corea del Sur?", "Syngman Rhee"],
+      ["¿Cuáles fueron las razones por las que salieron las fuerzas americanas de la península?", "Aliviar carga financiera, prioridad estratégica en Europa, desconfianza hacia Rhee"],
+      ["¿Quién aprueba la invasión a Corea del Sur?", "Stalin"],
+      ["¿Qué tipo de apoyo brindó la URSS a Corea del Norte?", "Apoyo político, armamento (tanques, aviones, artillería), asesores militares"],
+      ["¿Cuándo Corea del Norte cruzó el paralelo 38 e invadió Corea del Sur?", "25 de junio de 1950"],
+      ["¿Cuándo llegaron las fuerzas norcoreanas a Seúl?", "27 de junio de 1950"],
+      ["¿Cómo se llamaba el sector donde se encontraba la resistencia clave?", "Perímetro de Pusan"],
+      ["¿Dónde funcionó la red de abastecimiento similar al Red Ball Express?", "En Pusan"],
+      ["¿Cuántas contraofensivas existieron?", "Cinco (Masan, Miryang, Taegu, Kyongju"],
+      ["¿Qué ayudó a que las contraofensivas tuvieran éxito?", "Uso del terreno clave y fintas con ataques a objetivos limitados"],
+      ["¿Cómo se llama la operación para atacar al enemigo y reconquistar Seúl?", "Operación Chromite"],
+      ["¿Dónde se realizó el ataque a objetivo limitado junto al desembarco de Inchon?", "Kunsan"],
+      ["¿Ante qué evento MacArthur decide realizar la operación en Inchon?", "Ante el colapso del frente sur y la necesidad de un golpe estratégico inesperado"],
+      ["¿De qué manera se sectorizó el desembarco?", "Playa Verde (Wolmido), Playa Roja y Playa Azul (Blue Beach Uno, Dos y Tres)"],
+      ["¿Cuál fue la unidad que tomó el camino a Seúl y dónde desembarcó?", "1.er Regimiento de Marines, en la Playa Azul"],
+      ["¿De qué país y cuántas divisiones se usaron para atacar Corea del Norte?", "De China 33 divisiones"],
+      ["¿Por qué era importante el embalse de Chosin para la ONU?", "Porque era un área estratégica dentro del corredor de movilidad principal"],
+      ["¿Cuándo se firma el armisticio?", "27 de julio de 1953, en Panmunjom"]
+    ];
 
-    
-
+    function generarOpciones(correcta, i) {
+      let opciones = [correcta];
+      while (opciones.length < 4) {
+        let rand = preguntas[Math.floor(Math.random() * preguntas.length)][1];
+        if (!opciones.includes(rand)) {
+          opciones.push(rand);
+        }
+      }
+      // Mezclar opciones
+      return opciones.sort(() => Math.random() - 0.5)
+        .map(op => `<label><input type="radio" name="respuesta${i}" value="${op}"> ${op}</label><br>`).join("");
+    }
 
     const form = document.getElementById("cuestionario");
-    preguntas.forEach(([pregunta], i) => {
+    preguntas.forEach(([pregunta, correcta], i) => {
       form.innerHTML += `
-        <div class="pregunta">
-          <label><strong>${i + 1}. ${pregunta}</strong></label><br>
-          <input type="text" class="respuesta" id="respuesta${i}">
-          <button type="button" onclick="verificarRespuesta(${i})">Verificar</button>
+        <div class="pregunta" id="pregunta${i}">
+          <strong>${i + 1}. ${pregunta}</strong><br>
+          ${generarOpciones(correcta, i)}
+          <button type="button" onclick="verificarRespuesta(${i}, '${correcta.replace(/'/g, "\\'")}')">Verificar</button>
           <div id="feedback${i}"></div>
         </div>
       `;
     });
 
-    function verificarRespuesta(index) {
-      const userInput = document.getElementById(`respuesta${index}`).value.trim();
-      const feedback = document.getElementById(`feedback${index}`);
-      const respuestaCorrecta = preguntas[index][1];
+    function verificarRespuesta(index, correcta) {
+      const radios = document.getElementsByName(`respuesta${index}`);
+      let seleccionada = null;
+      for (const radio of radios) {
+        if (radio.checked) {
+          seleccionada = radio.value;
+          break;
+        }
+      }
 
-      if (userInput === respuestaCorrecta) {
+      const feedback = document.getElementById(`feedback${index}`);
+      if (seleccionada === correcta) {
         feedback.innerHTML = "✅ <span class='correcto'>Correcto</span>";
       } else {
-        feedback.innerHTML = `❌ <span class='incorrecto'>Incorrecto. Respuesta esperada: ${respuestaCorrecta}</span>`;
+        feedback.innerHTML = `❌ <span class='incorrecto'>Incorrecto. Respuesta esperada: ${correcta}</span>`;
       }
     }
   </script>
